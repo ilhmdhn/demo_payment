@@ -1,4 +1,3 @@
-"use client";
 
 import Image from 'next/image';
 import { Mona_Sans } from 'next/font/google';
@@ -16,50 +15,51 @@ export default function Page(){
     const Router = useRouter()
 
     const plans = [
-      { 
-        name: "Basic", 
-        price: "Rp 75.000",
-        stb: false,
-        limit_download: false,
-        support: false,
-        ultra_hd: false,
-        ads: true
-      },
-      { 
-        name: "Standard", 
-        price: "Rp 100.000",
-        stb: true,
-        limit_download: false,
-        support: false,
-        ultra_hd: false,
-        ads: true
-      },
-      { 
-        name: "Premium", 
-        price: "Rp 110.000",
-        stb: true,
-        limit_download: false,
-        support: true,
-        ultra_hd: true,
-        ads: true
-      },
+        { 
+            name: "Basic", 
+            price: "Rp 75.000",
+            stb: false,
+            limit_download: false,
+            support: false,
+            ultra_hd: false,
+            ads: true
+        },
+        { 
+            name: "Standard", 
+            price: "Rp 100.000",
+            stb: true,
+            limit_download: false,
+            support: false,
+            ultra_hd: false,
+            ads: true
+        },
+        { 
+            name: "Premium", 
+            price: "Rp 110.000",
+            stb: true,
+            limit_download: false,
+            support: true,
+            ultra_hd: true,
+            ads: true
+        },
     ];
 
     
     return (
-      <div className="w-screen h-screen flex items-center justify-center bg-black text-white p-6">
-        <div className="max-w-4xl w-full bg-[#181818] p-8 rounded-lg">
-          <h2 className="text-2xl font-semibold mb-4">Choose the plan thats right for you</h2>
-          <div className='flex flex-row justify-start items-center'>
+    <div className="w-screen h-screen flex items-center justify-center bg-black text-white p-6">
+      <div className="max-w-4xl w-full bg-[#181818] p-8 rounded-lg">
+        <h2 className="text-2xl font-semibold mb-4">Choose the plan thats right for you</h2>
+        <div className='flex flex-row justify-start items-center'>
             <CheckIcon color='red'/>
             <p className="text-sm text-gray-300">Play 60K+ song ad-free.</p>
-          </div>
-          <div className='flex flex-row justify-start items-center'>
+        </div>
+        <div className='flex flex-row justify-start items-center'>
             <CheckIcon color='red'/>
             <p className="text-sm text-gray-300">1080p - 4K videos resolution</p>
-          </div>
-          <div className='h-3'/>
-          <div className='flex flex-row'>
+        </div>
+        <div className='h-3'/>
+        
+        <div className='flex flex-row'>
             <div className='space-y-5'>
                 <div className='h-31'>
                     <Image
@@ -163,3 +163,5 @@ export default function Page(){
     </div>
   );
 }
+
+// bg-[#0F0F0F]
