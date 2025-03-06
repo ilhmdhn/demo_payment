@@ -4,6 +4,8 @@ import Image from 'next/image';
 import { Mona_Sans } from 'next/font/google';
 import {CheckIcon, CheckCircledIcon, CrossCircledIcon} from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
+import {formatToIDR} from './tools/currency';
+import paymentList from "./data/grade";
 
 const monaFont = Mona_Sans({
     subsets: ['latin'],
@@ -13,39 +15,7 @@ const monaFont = Mona_Sans({
 
 
 export default function Page(){
-    const Router = useRouter()
-
-    const plans = [
-      { 
-        name: "Basic", 
-        price: "Rp 75.000",
-        stb: false,
-        limit_download: false,
-        support: false,
-        ultra_hd: false,
-        ads: true
-      },
-      { 
-        name: "Standard", 
-        price: "Rp 100.000",
-        stb: true,
-        limit_download: false,
-        support: false,
-        ultra_hd: false,
-        ads: true
-      },
-      { 
-        name: "Premium", 
-        price: "Rp 110.000",
-        stb: true,
-        limit_download: false,
-        support: true,
-        ultra_hd: true,
-        ads: true
-      },
-    ];
-
-    
+    const Router = useRouter()    
     return (
       <div className="w-screen h-screen flex items-center justify-center bg-black text-white p-6">
         <div className="max-w-4xl w-full bg-[#181818] p-8 rounded-lg">
@@ -142,11 +112,11 @@ export default function Page(){
             </div>
             <div className='w-12'/>
             {
-                plans.map((plan)=>(
+                paymentList.map((plan)=>(
                     <div key={plan.name} className='mr-4 space-y-5 flex flex-col items-center hover:bg-gray-800 hover:scale-105 hover:rounded-lg p-2'>
                         <div className='h-31 flex flex-col items-center'>
                             <p>{plan.name}</p>
-                            <p>{plan.price}</p>
+                            <p>{formatToIDR(plan.price)}</p>
                         </div>
                             {plan.ads ? <CheckCircledIcon color='red'/> : <CrossCircledIcon color='red'/>}
                             {plan.stb ? <CheckCircledIcon color='red'/> : <CrossCircledIcon color='red'/>}
@@ -154,7 +124,7 @@ export default function Page(){
                             {plan.support ? <CheckCircledIcon color='red'/> : <CrossCircledIcon color='red'/>}
                             {plan.ultra_hd ? <CheckCircledIcon color='red'/> : <CrossCircledIcon color='red'/>}
                             {plan.ads ? <CheckCircledIcon color='red'/> : <CrossCircledIcon color='red'/>}
-                            <button onClick={()=> Router.push('/payment') } className="bg-red-600 px-3 mx-6 py-2 rounded text-sm text-white font-semibold">Choose Plan</button>
+                            <button onClick={()=> Router.push(`/payment/${plan.name}`) } className="bg-red-600 px-3 mx-6 py-2 rounded text-sm text-white font-semibold">Choose Plan</button>
                     </div>               
                 ))
             }
