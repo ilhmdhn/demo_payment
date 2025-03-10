@@ -19,7 +19,7 @@ const plans = [
     },
     {
         name: "Premium",
-        price: 110000, // Pastikan format angka benar
+        price: 110000,
         stb: true,
         limit_download: false,
         support: true,
