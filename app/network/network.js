@@ -4,7 +4,7 @@ const encodedKey = Buffer.from(`xnd_development_5Rn0rouE1lO5VP8h7WLy1sbdRJlN7fiY
 
 const instance = create({
     baseURL: 'https://api.xendit.co/',
-    timeout: 1000,
+    timeout: 60000,
     headers: {
         'Authorization': `Basic ${encodedKey}`,
         'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ const generateVAPayment = async (nominal, channel, customerName) => {
             }
         });
 
-        console.log(networkResponse.data);
+        return networkResponse.data;
     } catch (err) {
         console.error(`generateVAPayment ${err.message}`);
     }
@@ -67,11 +67,12 @@ const createQrisPayment = async (nominal) => {
             "expires_at": addHoursToTimestamp(24)
         }, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'api-version': '2022-07-31'
             }
         });
 
-        console.log(networkResponse);
+        return networkResponse.data;
     } catch (err) {
         console.error(`createQrisPayment ${err.message}`);
     }
@@ -87,28 +88,46 @@ const checkQrisState = async (code) => {
 }
 
 const createEwalletPayment = async (nominal, channel) => {
+    console.log(`EWALLET NOMINAL: ${nominal} METHOD: ${channel} uniqCode: ${generateUniqueId()}`);
     try {
-        const networkResponse = await instance.post('ewallets/charges', {
-            "reference_id": generateUniqueId(),
+        const id = generateUniqueId();
+        const body = {
+            "reference_id": id,
             "currency": "IDR",
             "amount": nominal,
             "checkout_method": "ONE_TIME_PAYMENT",
             "channel_code": channel,
-            "channel_properties": {
-                "mobile_number": "+6285749086487"
-            },
             "metadata": {
                 "branch_area": "IHP",
                 "branch_city": "SURABAYA"
             }
-        }, {
+        }
+        if (channel == 'ID_DANA' || channel == 'ID_SHOPEEPAY' || channel == 'ID_LINKAJA') {
+            body.channel_properties = {
+                "success_redirect_url": "https://paytest.happypuppy.id/"
+            }
+        } else if (channel == 'ID_OVO') {
+            body.channel_properties = {
+                "mobile_number": "+6285749086487"
+            }
+        } else if (channel == 'ID_ASTRAPAY') {
+            body.channel_properties = {
+                "success_redirect_url": "https://paytest.happypuppy.id/",
+                "failure_redirect_url": "https://paytest.happypuppy.id/"
+            }
+        } else if (channel == 'ID_ASTRAPAY') {
+            body.channel_properties = {
+                "cashtag": "ilhmdhn"
+            }
+        }
+        console.log(JSON.stringify(body));
+        const networkResponse = await instance.post('ewallets/charges', JSON.stringify(body), {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
 
-        console.log(networkResponse.data);
-
+        return networkResponse.data;
     } catch (err) {
         console.error(`createEwalletPayment ${err.message}`);
     }
@@ -130,9 +149,13 @@ const generateRetailPayment = async (retailCode, nominal, customerName) => {
             "retail_outlet_name": retailCode,
             "name": customerName,
             "expected_amount": nominal
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
 
-        console.log(networkResponse);
+        return networkResponse.data;
     } catch (err) {
         console.error(`generateRetailPayment ${err}`);
     }
