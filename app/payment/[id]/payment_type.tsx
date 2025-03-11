@@ -47,7 +47,8 @@ export default function PaymentDialog({ isOpen, price, month, onClose, onConfirm
       setMethodList([{ id: "qris", name: "QRIS" }]);
     } else if (method === "va") {
       const data = await getVaList();
-      setMethodList(data.map((value) => ({ id: value.code, name: value.name })));
+      // setMethodList(data.map((value) => ({ id: value.code, name: value.name })));
+      setMethodList(data.map((value: { code: string; name: string }) => ({ id: value.code, name: value.name })));
     } else if (method === "retail") {
       const newList = data[2]?.list || [];
       setMethodList(newList.map((value) => ({ id: value.code, name: value.name })));
